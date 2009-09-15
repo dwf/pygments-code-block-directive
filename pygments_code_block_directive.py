@@ -138,6 +138,11 @@ def code_block_directive(name, arguments, options, content, lineno,
         else:
             code_block += nodes.inline(value, value, classes=[cls])
 
+    # Remove the newline from the last node in the block, by pulling
+    # the text out and re-wrapping it in the same container.
+    if len(code_block):
+        nodeclass = code_block[-1].__class__
+        code_block[-1] = nodeclass(code_block[-1].astext().rstrip('\n'))
     return [code_block]
 
 
